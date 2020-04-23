@@ -4,8 +4,11 @@ from sqlalchemy import *
 from flask import request, jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.orm import Session
+from flask_cors import CORS, cross_origin
 
 
+
+CORS(application, support_credentials=True)
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 Accounts = Base.classes.account
@@ -14,13 +17,11 @@ session = Session(engine)
 
 @application.route('/index')
 @application.route('/')
-@crossdomain(origin='*')
 def index():
     return 'Welcome to this page'
 
 
-@application.route('/register', methods=('GET', 'POST'))
-@crossdomain(origin='*')
+@application.route('/register', methods=('GET', 'POST', 'OPTIONS'))
 def register():
     username = request.args.get('username')
     email = request.args.get('email')
@@ -33,8 +34,7 @@ def register():
     return jsonify({'user_added': True})
 
 
-@application.route('/sign_in', methods=('GET', 'POST'))
-@crossdomain(origin='*')
+@application.route('/sign_in', methods=('GET', 'POST', 'OPTIONS'))
 def sign_in():
     username_entered = request.args.get('username')
     password_entered = request.args.get('password')
