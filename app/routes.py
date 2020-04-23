@@ -31,15 +31,20 @@ def register():
     account = Table('account', metadata, autoload=True)
     engine.execute(account.insert(), username=username,
                    email=email, password=password_hash)
-    return jsonify({'user_added': True})
+    response = flask.jsonify({'user_added': True})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @application.route('/sign_in', methods=('GET', 'POST', 'OPTIONS'))
 def sign_in():
+    response = None
     username_entered = request.args.get('username')
     password_entered = request.args.get('password')
     user = session.query(Accounts).filter(or_(Accounts.username == username_entered, Accounts.email == username_entered)
                                           ).first()
     if user is not None and check_password_hash(user.password, password_entered):
-        return jsonify({'signed_in': True})
-    return jsonify({'signed_in': False})
+        response =  flask.jsonify({'signed_in': True})
+    response =  flask.jsonify({'signed_in': False})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
