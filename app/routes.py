@@ -14,11 +14,13 @@ session = Session(engine)
 
 @application.route('/index')
 @application.route('/')
+@crossdomain(origin='*')
 def index():
     return 'Welcome to this page'
 
 
 @application.route('/register', methods=('GET', 'POST'))
+@crossdomain(origin='*')
 def register():
     username = request.args.get('username')
     email = request.args.get('email')
@@ -32,6 +34,7 @@ def register():
 
 
 @application.route('/sign_in', methods=('GET', 'POST'))
+@crossdomain(origin='*')
 def sign_in():
     username_entered = request.args.get('username')
     password_entered = request.args.get('password')
