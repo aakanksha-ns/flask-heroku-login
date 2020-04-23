@@ -4,6 +4,8 @@ from sqlalchemy import *
 from flask import request, jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.orm import Session
+from flask_cors import cross_origin
+
 
 
 Base = automap_base()
@@ -19,6 +21,7 @@ def index():
 
 
 @application.route('/register', methods=["POST"])
+@cross_origin()
 def register():
     username = request.args.get('username')
     email = request.args.get('email')
@@ -32,6 +35,7 @@ def register():
 
 
 @application.route('/sign_in', methods=["POST"])
+@cross_origin()
 def sign_in():
     username_entered = request.args.get('username')
     password_entered = request.args.get('password')
