@@ -20,7 +20,7 @@ def index():
     return 'Welcome to this page'
 
 
-@application.route('/register', methods=["POST"])
+@application.route('/register', methods=["GET","POST"])
 @cross_origin()
 def register():
     username = request.args.get('username')
@@ -31,15 +31,10 @@ def register():
     account = Table('account', metadata, autoload=True)
     engine.execute(account.insert(), username=username,
                    email=email, password=password_hash)
-    response =  jsonify({'user_added': True})
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Credentials", True)
-    response.headers.add("Access-Control-Allow-Headers", "*")
-    response.headers.add("Access-Control-Allow-Methods", "*")
-    return response
+    return jsonify({'user_added': True})
 
 
-@application.route('/sign_in', methods=["POST"])
+@application.route('/sign_in', methods=["GET","POST"])
 @cross_origin()
 def sign_in():
     username_entered = request.args.get('username')
