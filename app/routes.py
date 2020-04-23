@@ -31,7 +31,12 @@ def register():
     account = Table('account', metadata, autoload=True)
     engine.execute(account.insert(), username=username,
                    email=email, password=password_hash)
-    return jsonify({'user_added': True})
+    response =  jsonify({'user_added': True})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Credentials", True)
+    response.headers.add("Access-Control-Allow-Headers", "*")
+    response.headers.add("Access-Control-Allow-Methods", "*")
+    return response
 
 
 @application.route('/sign_in', methods=["POST"])
