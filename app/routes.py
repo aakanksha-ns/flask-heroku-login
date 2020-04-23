@@ -18,7 +18,7 @@ def index():
     return 'Welcome to this page'
 
 
-@application.route('/register', methods=('POST'))
+@application.route('/register', methods=('GET', 'POST'))
 def register():
     username = request.args.get('username')
     email = request.args.get('email')
@@ -31,7 +31,7 @@ def register():
     return jsonify({'user_added': True})
 
 
-@application.route('/sign_in', methods=('POST'))
+@application.route('/sign_in', methods=('GET', 'POST'))
 def sign_in():
     username_entered = request.args.get('username')
     password_entered = request.args.get('password')
