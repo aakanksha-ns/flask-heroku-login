@@ -2,12 +2,12 @@ from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine
-
-
+from flask_cors import CORS, cross_origin
 
 
 # Initialization
 application = Flask(__name__)
+CORS(application, support_credentials=True)
 application.config.from_object(Config)
 
 DB_URI = application.config['SQLALCHEMY_DATABASE_URI']
