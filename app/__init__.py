@@ -9,7 +9,7 @@ from flask_cors import CORS, cross_origin
 application = Flask(__name__)
 application.config.from_object(Config)
 CORS(application, resources={r"/*": {"origins": "*"}})
-application.config['CORS_HEADERS'] = 'Content-Type'
+app.config['CORS_HEADERS'] = "Content-Type"
 
 DB_URI = application.config['SQLALCHEMY_DATABASE_URI']
 engine = create_engine(DB_URI)
