@@ -10,7 +10,9 @@ CORS(application,support_credentials=True)
 Base = automap_base()
 Base.prepare(engine, reflect=True)
 Accounts = Base.classes.account
+Books = Base.classes.books
 session = Session(engine)
+metadata = MetaData(engine)
 
 
 @application.route('/index')
@@ -25,7 +27,6 @@ def register():
     email = request.args.get('email')
     password = request.args.get('password')
     password_hash = generate_password_hash(password)
-    metadata = MetaData(engine)
     account = Table('account', metadata, autoload=True)
     engine.execute(account.insert(), username=username,
                    email=email, password=password_hash)
@@ -41,3 +42,23 @@ def sign_in():
     if user is not None and check_password_hash(user.password, password_entered):
         return jsonify({'signed_in': True})
     return jsonify({'signed_in': False})
+
+
+@application.route('/add_book', methods=["GET","POST"])
+def add_book():
+    isbn = request.args.get('isbn')
+    book_title = request.args.get('book_title')
+    book_author = request.args.get('book_author')
+    publication_year = request.args.get('publication_year')
+    image_url = request.args.get('image_url')
+    books = Table('books', metadata, autoload=True)
+    engine.execute(books.insert(), isbn=isbn,
+                   book_title=book_title, book_author=book_author, publication_year=publication_year,
+                   image_url=image_url)
+    return jsonify({'book_added': True})
+
+
+@application.route('/fetch_books', methods=["GET","POST"])
+def fetch_books():
+    books = session.query(Books).all()
+    return jsonify(books)
