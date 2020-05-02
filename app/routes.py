@@ -61,4 +61,13 @@ def add_book():
 @application.route('/fetch_books', methods=["GET","POST"])
 def fetch_books():
     books = session.query(Books).all()
-    return jsonify(books)
+    books_list = []
+    for book in books:
+        books_list.append({
+            'isbn': book.isbn,
+            'book_title': book.book_title,
+            'book_author': book.book_author,
+            'publication_year': book.publication_year,
+            'image_url': book.image_url
+        })
+    return jsonify(books_list)
